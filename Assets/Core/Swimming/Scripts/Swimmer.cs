@@ -36,8 +36,6 @@ public class Swimmer : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         _trackingRef = this.gameObject.transform;
-        _rb.useGravity = false;
-        _rb.constraints = RigidbodyConstraints.FreezeRotation;
     }
 
     private void FixedUpdate()
@@ -66,6 +64,22 @@ public class Swimmer : MonoBehaviour
         }
     }
 
+    #endregion
+    
+    #region Public Methods
+
+    public void SetSwimmer()
+    {
+        _rb.useGravity = false;
+        _rb.constraints = RigidbodyConstraints.FreezeRotation;
+    }
+    
+    public void UnsetSwimmer()
+    {
+        _rb.useGravity = true;
+        _rb.constraints = RigidbodyConstraints.None;
+    }
+    
     #endregion
     
 }
