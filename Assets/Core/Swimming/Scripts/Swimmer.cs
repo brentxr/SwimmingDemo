@@ -1,3 +1,5 @@
+using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -18,6 +20,9 @@ public class Swimmer : MonoBehaviour
     [SerializeField] private InputActionReference rightControllerRef;
     [SerializeField] private InputActionReference rightControlVelocity;
 
+    [Header("Text for dive Timer")]
+    [SerializeField] private TextMeshProUGUI diveTimerText;
+    
 
     #endregion
 
@@ -26,6 +31,7 @@ public class Swimmer : MonoBehaviour
     private Rigidbody _rb;
     private float _coolDownTimer;
     private Transform _trackingRef;
+    private float _diveTimer;
 
     #endregion
 
@@ -36,11 +42,13 @@ public class Swimmer : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         _trackingRef = this.gameObject.transform;
+        _diveTimer = 0.0f;
     }
 
     private void FixedUpdate()
     {
         _coolDownTimer += Time.deltaTime;
+        _diveTimer += Time.deltaTime;
         
         if (_coolDownTimer > timeBetweenStrokes && 
             leftControllerRef.action.IsPressed() && 
@@ -61,6 +69,12 @@ public class Swimmer : MonoBehaviour
         if (_rb.velocity.sqrMagnitude > 0.01f)
         {
             _rb.AddForce(-_rb.velocity * drag, ForceMode.Acceleration);
+        }
+
+        if (diveTimerText != null)
+        {
+            diveTimerText.text = Math.Round(_diveTimer, 2).ToString();
+            
         }
     }
 
